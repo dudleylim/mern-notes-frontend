@@ -2,12 +2,13 @@ import React from 'react'
 import { useState, useEffect, useContext } from 'react';
 import NoteItem from '../components/NoteItem';
 import NoteContext from '../context/NoteContext'
+import UserContext from '../context/UserContext';
 import { BsFillTrashFill } from 'react-icons/bs'
 import { AiFillEdit } from 'react-icons/ai'
 
-
 const Home = () => {
     const { notes, dispatch } = useContext(NoteContext);
+    const { user } = useContext(UserContext);
     const [isUpdating, setIsUpdating] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -22,7 +23,10 @@ const Home = () => {
     useEffect(() => {
         const fetchNotes = async () => {
             const response = await fetch('/api/notes', {
-                method: 'GET'
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${user.token}`
+                }
             });
             const data = await response.json();
 
@@ -32,8 +36,10 @@ const Home = () => {
             })
         }
 
-        fetchNotes();
-    }, [dispatch]);
+        if (user) {
+            fetchNotes();
+        }
+    }, [dispatch, user]);
 
     // auto close error message
     useEffect(() => {
@@ -49,6 +55,12 @@ const Home = () => {
         e.preventDefault();
         setIsLoading(true);
 
+        if (!user) {
+            setError("You must be logged in");
+            setIsLoading(false);
+            return;
+        }
+
         const { _id, title, content } = formDetails;
         const newNote = {
             _id,
@@ -61,7 +73,8 @@ const Home = () => {
             const response = await fetch('/api/notes/' + _id, {
                 method: 'PATCH',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
                 },
                 body: JSON.stringify({
                     title,
@@ -86,7 +99,8 @@ const Home = () => {
             const response = await fetch('/api/notes/', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user.token}`
                 },
                 body: JSON.stringify({
                     title,
@@ -115,8 +129,18 @@ const Home = () => {
 
     const handleDelete = async (_id) => {
         setIsLoading(true);
+
+        if (!user) {
+            setError("You must be logged in");
+            setIsLoading(false);
+            return;
+        }
+
         const response = await fetch('/api/notes/' + _id, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${user.token}`
+            }
         })
         
         if (response.ok) {
