@@ -1,5 +1,5 @@
 {
-  "proxy": "http://localhost:5000",
+  "proxy": "https://mern-notes-app-api-46u1.onrender.com",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,

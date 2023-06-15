@@ -37,7 +37,6 @@ export const UserContextProvider = ({ children }) => {
                 payload: existingUser
             })
         }
-        console.log(existingUser);
     }, []);
 
     const contextData = {

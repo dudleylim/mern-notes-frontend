@@ -11,14 +11,12 @@ const UserForm = ({ type }) => {
         e.preventDefault();
 
         if (type === 'LOGIN') {
-            console.log(type);
             login(email, password);
             setEmail('');
             setPassword('');
         }
 
         if (type === 'SIGNUP'){
-            console.log(type);
             signup(email, password);
             setEmail('');
             setPassword('');
