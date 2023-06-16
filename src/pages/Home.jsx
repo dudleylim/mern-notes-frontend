@@ -22,7 +22,7 @@ const Home = () => {
     // set notes state using dispatch
     useEffect(() => {
         const fetchNotes = async () => {
-            const response = await fetch('/api/notes', {
+            const response = await fetch(process.env.REACT_APP_API_URI + '/api/notes', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${user.token}`
@@ -70,7 +70,7 @@ const Home = () => {
 
         if (isUpdating) {
             // make patch request
-            const response = await fetch('/api/notes/' + _id, {
+            const response = await fetch(process.env.REACT_APP_API_URI + '/api/notes/' + _id, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ const Home = () => {
             cancelUpdate();
         } else {
             // make post request
-            const response = await fetch('/api/notes/', {
+            const response = await fetch(process.env.REACT_APP_API_URI + '/api/notes/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -136,7 +136,7 @@ const Home = () => {
             return;
         }
 
-        const response = await fetch('/api/notes/' + _id, {
+        const response = await fetch(process.env.REACT_APP_API_URI + '/api/notes/' + _id, {
             method: 'DELETE',
             headers: {
                 'Authorization': `Bearer ${user.token}`

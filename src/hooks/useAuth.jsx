@@ -16,7 +16,7 @@ export const useAuth = () => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch('/api/users/signup', {
+        const response = await fetch(process.env.REACT_APP_API_URI + '/api/users/signup', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -46,7 +46,7 @@ export const useAuth = () => {
         setIsLoading(true);
         setError(null);
 
-        const response = await fetch('/api/users/login', {
+        const response = await fetch(process.env.REACT_APP_API_URI + '/api/users/login', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
